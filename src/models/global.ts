@@ -8,6 +8,6 @@ const useUser = () => {
     name,
     setName,
   };
-};
+}; 
 
 export default useUser;

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "author": "玫瑰应急箱 <zr2294683094@163.com>",
+  "author": "<zr2294683094@163.com>",
   "scripts": {
     "build": "max build",
     "dev": "max dev",
