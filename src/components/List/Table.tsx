@@ -1,4 +1,5 @@
 import { Button, Table } from 'antd';
+import { Link } from '@umijs/max';
 interface IQuery {
   data: object;
 }
@@ -30,9 +31,12 @@ const TableList = (props: IQuery) => {
       align: 'center',
       render: (_: any, _record: any) => (
         <>
-          <Button type="primary" size="small">
+          {/* <Button type="primary" size="small">
             审核
-          </Button>
+          </Button> */}
+          <Link to="./audit">
+         <Button  type="primary" size="small" >审核</Button>
+          </Link>
           <Button type="primary" size="small" style={{ marginLeft: 20 }}>
             删除
           </Button>
@@ -55,7 +59,11 @@ const TableList = (props: IQuery) => {
 
   return (
     <div className="basicInfo list-table">
-      <Table columns={getColumn() as any} dataSource={dataSoru()} />
+      <Table 
+      columns={getColumn() as any} 
+      dataSource={dataSoru()} 
+      rowKey={record=>record.username}
+      />
     </div>
   );
 };
