@@ -10,12 +10,6 @@ const io = axios.create({
 
 const handleResponse = (responseData) => responseData;
 
-io.interceptors.request.use((config) => {
-  if (XENV && XENV !== '') {
-    config.headers['x-env'] = XENV;
-  }
-  return config;
-}, (err) => Promise.reject(err));
 
 io.interceptors.response.use((res) => {
   const { data } = res;

@@ -13,4 +13,5 @@ export default defineConfig({
   },
   routes:getRoute,
   npmClient: 'yarn',
+  mock:{}
 });
