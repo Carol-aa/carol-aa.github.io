@@ -1,4 +1,5 @@
 import { defineConfig } from '@umijs/max';
+import getRoute from './src/route/menu.js'
 
 export default defineConfig({
   antd: {},
@@ -8,33 +9,8 @@ export default defineConfig({
   request: {},
   dva:{},
   layout: {
-    title: '@umijs/max',
+    title: 'xx权限平台',
   },
-  routes: [
-    {
-      path: '/',
-      redirect: '/list',
-    },
-    {
-      name: 'xx审核平台-列表页',
-      path: '/list',
-      component: './List',
-   
-    },
-    {
-      name: 'xx审核平台- CRUD 示例',
-      path: '/table',
-      component: './Table',
-      routes:[
-           // routes: [
-        {
-          name: 'xx审核平台-权限演示',
-          path: '/table/access',
-          component: './Access/index.tsx',
-        },
-      // ],
-      ]
-    },
-  ],
+  routes:getRoute,
   npmClient: 'yarn',
 });
