@@ -18,12 +18,15 @@ const Search: React.FC = (props:any) => {
   const searchInfo = () => {
     const value = form.getFieldsValue();
     dispatch({
-      type: 'userListInfo/getListInfo',
-    //   payload: {},
+      type: 'userListInfo/upDateState',
+      payload:value
     });
+    dispatch({
+      type:"userListInfo/searchListInfo"
+    })
+   
     
   };
-  console.log(listInfo,'listInfo');
   const renderForm = () => (
     <Form form={form} layout="inline" className="listForm">
       <Item {...FormIemLayout} name="username" label="用户名">

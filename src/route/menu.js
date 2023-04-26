@@ -15,18 +15,4 @@ export default getRoute = [
         component: './Audit',
         hideInMenu: true,
     },
-
-    {
-        name: 'xx审核平台- CRUD 示例',
-        path: '/table',
-        component: './Table',
-        routes: [
-            {
-                name: 'xx审核平台-权限演示',
-                path: '/table/access',
-                component: './Access/index.tsx',
-            },
-
-        ]
-    },
 ]

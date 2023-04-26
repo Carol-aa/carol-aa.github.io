@@ -1,72 +1,61 @@
 import { PageContainer } from '@ant-design/pro-components';
-import { Link, useModel } from '@umijs/max';
+import { Link } from '@umijs/max';
+import { connect } from 'dva';
 import { Button, Descriptions, Table } from 'antd';
-
-const HomePage: React.FC = () => {
-  const { name } = useModel('global');
+import { useEffect } from 'react';
+import TableList from '@/components/Audit/Table';
+import "./index.less"
+const HomePage: React.FC = (props) => {
+  const { aduitInfo = {}, dispatch, loading } = props || {}
+  const init = () => {
+    dispatch({
+      type: 'userListInfo/upDateState',
+      payload: {
+        searchParams: {}
+      }
+    })//清空入参
+    dispatch({
+      type: 'userListInfo/getAuthInfo',
+    });
+  }
+  useEffect(() => {
+    init()
+  }, [])
   const renderDetails = () => {
+    const { username, id, url, type, land, other, industry1, industry2, } = aduitInfo || {};
     return (
       <>
-        <Descriptions  bordered >
-          <Descriptions.Item label="UserName">Zhou Maomao</Descriptions.Item>
-          <Descriptions.Item label="Telephone">1810000000</Descriptions.Item>
-          <Descriptions.Item label="Live">Hangzhou, Zhejiang</Descriptions.Item>
-          <Descriptions.Item label="Remark">empty</Descriptions.Item>
-          <Descriptions.Item label="Address">
-            No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-          </Descriptions.Item>
+        <Descriptions bordered >
+          <Descriptions.Item label="用户名:">{username}</Descriptions.Item>
+          <Descriptions.Item label="用户id:">{id}</Descriptions.Item>
+          <Descriptions.Item label="公司网站">{url}</Descriptions.Item>
+          <Descriptions.Item label="资质">{land}</Descriptions.Item>
+          <Descriptions.Item label="一级行业">{industry1}</Descriptions.Item>
+          <Descriptions.Item label="二级行业">{industry2}</Descriptions.Item>
+          <Descriptions.Item label="用户类型">{type}</Descriptions.Item>
+          <Descriptions.Item label="批注">{other} </Descriptions.Item>
         </Descriptions>
       </>
     );
   };
-  const renderTable = () => {
-    const column = [
-      {
-        title: '标题',
-        dataIndex: 'title',
-        align: 'center',
-      },
-      {
-        title: '描述',
-        dataIndex: 'discrabe',
-        align: 'center',
-      },
-      {
-        title: '图片',
-        dataIndex: 'image',
-        align: 'center',
-      },
-
-      {
-        title: '操作',
-        align: 'center',
-        render: (_: any, _record: any) => (
-          <>
-            <Link to="./audit">
-              <Button type="primary" size="small">
-                审核
-              </Button>
-            </Link>
-            <Button type="primary" size="small" style={{ marginLeft: 20 }}>
-              删除
-            </Button>
-          </>
-        ),
-      },
-      {
-        title: '落地页',
-        align: 'center',
-      },
-    ];
-    return (
-      <>
-        <Table columns={column as any}></Table>
-      </>
-    );
-  };
+  const renderBtnGroup = () => {
+    return <div className='btn-group'>
+      <Button className='btn-item'>通过所选</Button>
+      <Button className='btn-item'>拒绝所选</Button>
+      <Button className='btn-item'>拒绝账户</Button>
+      <Button className='btn-item'>搁置</Button>
+      <Button className='btn-item'>下一个任务</Button></div>
+  }
   return <PageContainer ghost>
     {renderDetails()}
-    {renderTable()}</PageContainer>;
+    {renderBtnGroup()}
+    <TableList></TableList>
+  </PageContainer>;
 };
 
-export default HomePage;
+
+const mapStateToProps = (state: { userListInfo: any; loading: { effects: any; }; }) => ({
+  ...state.userListInfo,
+  loading: state.loading.effects,
+});
+export default connect(mapStateToProps)(HomePage);

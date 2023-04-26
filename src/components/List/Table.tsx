@@ -1,8 +1,10 @@
 import { Link } from '@umijs/max';
-import { Button, Table } from 'antd';
+import { Button, Modal, Table } from 'antd';
 import { connect } from 'dva';
+import { useEffect, useState } from 'react';
 const TableList: React.FC = (props: any) => {
-  const { data,listInfo=[] } = props;
+  const { listInfo = [], dispatch } = props;
+  const [visible, setVisible] = useState(false)
   const getColumn = () => [
     {
       title: '用户名',
@@ -27,36 +29,43 @@ const TableList: React.FC = (props: any) => {
     {
       title: '操作',
       align: 'center',
-      render: (_: any, _record: any) => (
+      render: (_: any, record: any) => (
         <>
-          {/* <Button type="primary" size="small">
-            审核
-          </Button> */}
-          <Link to="./audit">
+          <Link to={`./audit?${record.id}`}>
             <Button type="primary" size="small">
               审核
             </Button>
           </Link>
-          <Button type="primary" size="small" style={{ marginLeft: 20 }}>
+          <Button type="primary" size="small" style={{ marginLeft: 20 }} onClick={() => { setVisible(true) }}>
             删除
           </Button>
         </>
       ),
     },
-  ];
-  // const dataSoru = () => {
-  //   let res = [];
-  //   for (let i = 0; i < 100; i++) {
-  //     res.push({
-  //       username: '张三' + i,
-  //       create_time: '创建时间' + i,
-  //       product_id: '2',
-  //       industry: '行业',
-  //     });
-  //   }
-  //   return res;
-  // };
-
+  ]
+  //初始化
+  const init = () => {
+    dispatch({
+      type: 'userListInfo/upDateState',
+      payload:{
+        searchParams:{}
+      }
+    })//清空入参
+    dispatch({
+      type: 'userListInfo/getListInfo',
+    });
+  }
+  const handleOk = () => {
+    setVisible(false);
+    //调用删除接口，
+    init()//重新请求全部数据
+  };
+  const handleCancel = () => {
+    setVisible(false);
+  };
+  useEffect(() => {
+    init();
+  }, [])
   return (
     <div className="basicInfo list-table">
       <Table
@@ -64,11 +73,16 @@ const TableList: React.FC = (props: any) => {
         dataSource={listInfo}
         rowKey={(record: any) => record.username}
       />
+      <Modal title="确认删除吗？"
+       open={visible}
+        onOk={handleOk} 
+        onCancel={handleCancel}>
+      </Modal>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: { userListInfo: any; loading: { effects: any; }; }) => ({
   ...state.userListInfo,
   loading: state.loading.effects,
 });
