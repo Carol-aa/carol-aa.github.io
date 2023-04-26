@@ -17,7 +17,8 @@
       "@/*":["src/*"],
       "components":["src/components/*"],
       "_pinia/*":["src/pinia/*"]
-    }
+    },
+    "noImplicitAny":false
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
 

@@ -1,10 +1,8 @@
-import { Button, Table } from 'antd';
 import { Link } from '@umijs/max';
-interface IQuery {
-  data: object;
-}
-const TableList = (props: IQuery) => {
-  const { data } = props;
+import { Button, Table } from 'antd';
+import { connect } from 'dva';
+const TableList: React.FC = (props: any) => {
+  const { data,listInfo=[] } = props;
   const getColumn = () => [
     {
       title: '用户名',
@@ -35,7 +33,9 @@ const TableList = (props: IQuery) => {
             审核
           </Button> */}
           <Link to="./audit">
-         <Button  type="primary" size="small" >审核</Button>
+            <Button type="primary" size="small">
+              审核
+            </Button>
           </Link>
           <Button type="primary" size="small" style={{ marginLeft: 20 }}>
             删除
@@ -44,27 +44,32 @@ const TableList = (props: IQuery) => {
       ),
     },
   ];
-  const dataSoru = () => {
-    let res = [];
-    for (let i = 0; i < 100; i++) {
-      res.push({
-        username: '张三' + i,
-        create_time: '创建时间' + i,
-        product_id: '2',
-        industry: '行业',
-      });
-    }
-    return res;
-  };
+  // const dataSoru = () => {
+  //   let res = [];
+  //   for (let i = 0; i < 100; i++) {
+  //     res.push({
+  //       username: '张三' + i,
+  //       create_time: '创建时间' + i,
+  //       product_id: '2',
+  //       industry: '行业',
+  //     });
+  //   }
+  //   return res;
+  // };
 
   return (
     <div className="basicInfo list-table">
-      <Table 
-      columns={getColumn() as any} 
-      dataSource={dataSoru()} 
-      rowKey={record=>record.username}
+      <Table
+        columns={getColumn() as any}
+        dataSource={listInfo}
+        rowKey={(record: any) => record.username}
       />
     </div>
   );
 };
-export default TableList;
+
+const mapStateToProps = (state) => ({
+  ...state.userListInfo,
+  loading: state.loading.effects,
+});
+export default connect(mapStateToProps)(TableList);

@@ -1,30 +1,47 @@
+import { message } from 'antd';
+import * as service from '../services/list';
 
 export default {
-    namespace :"listInfo",
+  namespace: 'userListInfo',
   state: {
-    ListInfo:[],
-    searchParams:{},
+    listInfo: [],
+    searchParams: {},
   },
- 
+
   effects: {
-    *getListInfo({ payload  }, { call, put,select }):Iquery {
-        const {searchParams={}} = yield select((state)=> state.listInfo);
-        const { data } = yield call(queryUser, payload);
-        yield put({ type: 'upDateState', payload: data });
-      },
+    *getListInfo({}, { call, put, select }) {
+      const { searchParams = {} } = yield select((state) => state.userListInfo);
+      const { data, errno, errmsg } = yield call(
+        service.searchListInfo,
+        searchParams,
+      );
+      console.log(data);
+      if (errno === 0) {
+        message.success("查询成功")
+        console.log((yield select((state) => state.userListInfo)))
+        yield put({
+          type: 'upDateState',
+          payload: {
+            listInfo: data,
+          },
+        });
+      } else {
+        message.error(errmsg);
+      }
+    },
   },
- 
+
   reducers: {
     upDateState(state: any, { payload }: any) {
       return {
         ...state,
-        user: payload,
+       ...payload,
       };
     },
   },
- 
-//   test(state) {
-//     console.log('test');
-//     return state;
-//   },
+
+  //   test(state) {
+  //     console.log('test');
+  //     return state;
+  //   },
 };
