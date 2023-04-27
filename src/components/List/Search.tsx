@@ -1,13 +1,13 @@
 import { Button, DatePicker, Form, Input } from 'antd';
+import { connect } from 'dva';
 import React from 'react';
-import{connect } from 'dva';
 import './index.less';
 // interface IQuery {
 //     data?: object,
 //     dispatch():void
 // }
-const Search: React.FC = (props:any) => {
-  const { data, dispatch,listInfo } = props||{};
+const Search: React.FC = (props: any) => {
+  const { data, dispatch, listInfo } = props || {};
   const [form] = Form.useForm();
   const { Item } = Form;
   const { RangePicker } = DatePicker;
@@ -19,13 +19,13 @@ const Search: React.FC = (props:any) => {
     const value = form.getFieldsValue();
     dispatch({
       type: 'userListInfo/upDateState',
-      payload:value
+      payload: {
+        searchParams: {...value}
+      },
     });
     dispatch({
-      type:"userListInfo/searchListInfo"
-    })
-   
-    
+      type: 'userListInfo/searchListInfo',
+    });
   };
   const renderForm = () => (
     <Form form={form} layout="inline" className="listForm">
@@ -54,9 +54,8 @@ const Search: React.FC = (props:any) => {
     </div>
   );
 };
-// export default Search;
-const mapStateToProps = (state) =>({
-    ...state.userListInfo,
-    loading:state.loading.effects
-})
-export default connect(mapStateToProps)(Search)
+const mapStateToProps = (state) => ({
+  ...state.userListInfo,
+  loading: state.loading.effects,
+});
+export default connect(mapStateToProps)(Search);

@@ -6,5 +6,8 @@ export const searchDetails = (data: any) => httpClient.post('/api/getDetails', d
 
 
 export const searchInfo = (data: any) => httpClient.post('/api/getListInfo/2', data);
-
+//审核信息
 export const getAuthInfo = (data: any) => httpClient.post('/api/getAuthInfo', data);
+// 审核列表
+export const getAuthList = (data: any) => httpClient.post('/api/getAuthList', data);
+

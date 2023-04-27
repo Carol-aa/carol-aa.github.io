@@ -5,8 +5,9 @@ import { Button, Descriptions, Table } from 'antd';
 import { useEffect } from 'react';
 import TableList from '@/components/Audit/Table';
 import "./index.less"
-const HomePage: React.FC = (props) => {
+const HomePage: React.FC = (props: any) => {
   const { aduitInfo = {}, dispatch, loading } = props || {}
+  console.log(window.location.replace("/"))
   const init = () => {
     dispatch({
       type: 'userListInfo/upDateState',

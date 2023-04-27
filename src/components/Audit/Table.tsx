@@ -1,8 +1,29 @@
-import { Link } from '@umijs/max';
-import { Button, Modal, Table } from 'antd';
+import { Button, Popconfirm, Spin, Table } from 'antd';
 import { connect } from 'dva';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 const TableList: React.FC = (props: any) => {
+  const { loading, dispatch, aduitList = [] } = props || {};
+  const isLoading = loading['userListInfo/getAuthList'];
+
+  const confirmOk =() => {
+    //确认通过
+    dispatch({
+      type:"userListInfo/pass"
+    })
+   }
+   const confirmRefuse =( ) => {
+    dispatch({
+      type:"userListInfo/confirmRefuse"
+    })
+    }
+  const init = () => {
+    dispatch({
+      type: 'userListInfo/getAuthList',
+    });
+  };
+  useEffect(() => {
+    init();
+  }, []);
 
   const renderTable = () => {
     const column = [
@@ -27,14 +48,27 @@ const TableList: React.FC = (props: any) => {
         align: 'center',
         render: (_: any, _record: any) => (
           <>
-            <Link to="./audit">
+            <Popconfirm
+              title="确认通过吗?"
+              okText={"确定"}
+              cancelText={"取消"}
+              onConfirm={confirmOk}
+            >
               <Button type="primary" size="small">
-                审核
+                通过
               </Button>
-            </Link>
-            <Button type="primary" size="small" style={{ marginLeft: 20 }}>
-              删除
+            </Popconfirm>
+            <Popconfirm
+              title="确认拒绝吗?"
+              okText={"确定"}
+              cancelText={"取消"}
+              onConfirm={confirmRefuse}
+            >
+              <Button type="primary" size="small" style={{ marginLeft: 20 }}>
+              拒绝
             </Button>
+            </Popconfirm>
+          
           </>
         ),
       },
@@ -45,18 +79,19 @@ const TableList: React.FC = (props: any) => {
     ];
     return (
       <>
-        <Table columns={column as any}></Table>
+        <Spin spinning={isLoading}>
+          <Table dataSource={aduitList} columns={column as any}></Table>
+        </Spin>
       </>
     );
   };
-  return (
-    <div className="basicInfo list-table">
-     {renderTable()}
-    </div>
-  );
+  return <div className="basicInfo list-table">{renderTable()}</div>;
 };
 
-const mapStateToProps = (state: { userListInfo: any; loading: { effects: any; }; }) => ({
+const mapStateToProps = (state: {
+  userListInfo: any;
+  loading: { effects: any };
+}) => ({
   ...state.userListInfo,
   loading: state.loading.effects,
 });

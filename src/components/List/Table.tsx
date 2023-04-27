@@ -1,10 +1,11 @@
 import { Link } from '@umijs/max';
-import { Button, Modal, Table } from 'antd';
+import { Button, Modal, Spin, Table } from 'antd';
 import { connect } from 'dva';
 import { useEffect, useState } from 'react';
 const TableList: React.FC = (props: any) => {
-  const { listInfo = [], dispatch } = props;
-  const [visible, setVisible] = useState(false)
+  const { listInfo = {}, dispatch, loading } = props || {}
+  const [visible, setVisible] = useState(false);
+  const isLoading = loading["userListInfo/getListInfo"] 
   const getColumn = () => [
     {
       title: '用户名',
@@ -47,8 +48,8 @@ const TableList: React.FC = (props: any) => {
   const init = () => {
     dispatch({
       type: 'userListInfo/upDateState',
-      payload:{
-        searchParams:{}
+      payload: {
+        searchParams: {}
       }
     })//清空入参
     dispatch({
@@ -68,14 +69,16 @@ const TableList: React.FC = (props: any) => {
   }, [])
   return (
     <div className="basicInfo list-table">
+      <Spin spinning={isLoading}> 
       <Table
         columns={getColumn() as any}
         dataSource={listInfo}
         rowKey={(record: any) => record.username}
       />
+      </Spin>
       <Modal title="确认删除吗？"
-       open={visible}
-        onOk={handleOk} 
+        open={visible}
+        onOk={handleOk}
         onCancel={handleCancel}>
       </Modal>
     </div>
