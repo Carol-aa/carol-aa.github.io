@@ -1,6 +1,33 @@
 import { message } from 'antd';
 import * as service from '../services/list';
-import {datasource,audithList} from '../../mock/list.ts'
+const audithList = () => {
+  let res: any = [];
+  for (let i = 0; i < 20; i++) {
+    res.push({
+      title: '标题' + i,
+      id: i,
+      discrabe: '描述' + i,
+      page: {
+        url: 'https://waidu.com',
+        img: 'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png',
+      },
+    });
+  }
+  return res;
+};
+const datasource = () => {
+  let res: any = [];
+  for (let i = 0; i < 100; i++) {
+    res.push({
+      id: i,
+      username: '初始化用户名' + i,
+      create_time: '创建时间' + i,
+      product_id: '2',
+      industry: '行业',
+    });
+  }
+  return res;
+};
 const aduitInfo ={
   username: '审核用户名',
   id: 2,
