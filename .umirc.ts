@@ -8,6 +8,7 @@ export default defineConfig({
   initialState: {},
   request: {},
   dva:{},
+  outputPath: 'docs',
   layout: {
     title: 'xx权限平台',
   },
