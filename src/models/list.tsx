@@ -41,7 +41,6 @@ export default {
       );
       if (errno === 0) {
         message.success('查询成功');
-        console.log(yield select((state) => state.userListInfo));
         yield put({
           type: 'upDateState',
           payload: {
@@ -58,7 +57,6 @@ export default {
         service.getAuthInfo,
         searchParams,
       );
-      console.log(data);
       if (errno === 0) {
         message.success('成功');
         yield put({
@@ -92,7 +90,6 @@ export default {
 
   reducers: {
     upDateState(state: any, { payload }: any) {
-      console.log(state, payload);
       return {
         ...state,
         ...payload,

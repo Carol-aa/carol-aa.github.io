@@ -2,12 +2,8 @@ import { Button, DatePicker, Form, Input } from 'antd';
 import { connect } from 'dva';
 import React from 'react';
 import './index.less';
-// interface IQuery {
-//     data?: object,
-//     dispatch():void
-// }
 const Search: React.FC = (props: any) => {
-  const { data, dispatch, listInfo } = props || {};
+  const {  dispatch } = props || {};
   const [form] = Form.useForm();
   const { Item } = Form;
   const { RangePicker } = DatePicker;

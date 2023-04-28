@@ -19,13 +19,14 @@ const audithList = () => {
       title: '标题' + i,
       id: i,
       discrabe: '描述' + i,
-      image: '图片' + i,
-      page: '落地页' + i,
-
-    })
+      page: {
+        url: 'https://waidu.com',
+        img: 'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png',
+      },
+    });
   }
   return res;
-}
+};
 export default {
   // 返回值可以是数组形式
   'Post /api/getListInfo': {
@@ -63,9 +64,6 @@ export default {
   'Post  /api/getAuthList': {
     errno: 0,
     errmsg: 'null',
-    data:audithList()
+    data: audithList(),
   },
-
-
-
 };

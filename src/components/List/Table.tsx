@@ -3,9 +3,9 @@ import { Button, Modal, Spin, Table } from 'antd';
 import { connect } from 'dva';
 import { useEffect, useState } from 'react';
 const TableList: React.FC = (props: any) => {
-  const { listInfo = {}, dispatch, loading } = props || {}
+  const { listInfo = {}, dispatch, loading } = props || {};
   const [visible, setVisible] = useState(false);
-  const isLoading = loading["userListInfo/getListInfo"] 
+  const isLoading = loading['userListInfo/getListInfo'];
   const getColumn = () => [
     {
       title: '用户名',
@@ -33,59 +33,73 @@ const TableList: React.FC = (props: any) => {
       render: (_: any, record: any) => (
         <>
           <Link to={`./audit?${record.id}`}>
-            <Button type="primary" size="small">
+            <Button
+              type="primary"
+              size="small"
+            >
               审核
             </Button>
           </Link>
-          <Button type="primary" size="small" style={{ marginLeft: 20 }} onClick={() => { setVisible(true) }}>
+          <Button
+            type="primary"
+            size="small"
+            style={{ marginLeft: 20 }}
+            onClick={() => {
+              setVisible(true);
+            }}
+          >
             删除
           </Button>
         </>
       ),
     },
-  ]
+  ];
   //初始化
   const init = () => {
     dispatch({
       type: 'userListInfo/upDateState',
       payload: {
-        searchParams: {}
-      }
-    })//清空入参
+        searchParams: {},
+      },
+    }); //清空入参
     dispatch({
       type: 'userListInfo/getListInfo',
     });
-  }
+  };
   const handleOk = () => {
     setVisible(false);
     //调用删除接口，
-    init()//重新请求全部数据
+    init(); //重新请求全部数据
   };
   const handleCancel = () => {
     setVisible(false);
   };
   useEffect(() => {
     init();
-  }, [])
+  }, []);
   return (
     <div className="basicInfo list-table">
-      <Spin spinning={isLoading}> 
-      <Table
-        columns={getColumn() as any}
-        dataSource={listInfo}
-        rowKey={(record: any) => record.username}
-      />
+      <Spin spinning={isLoading}>
+        <Table
+          columns={getColumn() as any}
+          dataSource={listInfo}
+          rowKey={(record: any) => record.username}
+        />
       </Spin>
-      <Modal title="确认删除吗？"
+      <Modal
+        title="确认删除吗？"
         open={visible}
         onOk={handleOk}
-        onCancel={handleCancel}>
-      </Modal>
+        onCancel={handleCancel}
+      ></Modal>
     </div>
   );
 };
 
-const mapStateToProps = (state: { userListInfo: any; loading: { effects: any; }; }) => ({
+const mapStateToProps = (state: {
+  userListInfo: any;
+  loading: { effects: any };
+}) => ({
   ...state.userListInfo,
   loading: state.loading.effects,
 });
