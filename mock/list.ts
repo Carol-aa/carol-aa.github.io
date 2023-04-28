@@ -1,4 +1,4 @@
-const datasource = () => {
+export const datasource = () => {
   let res: any = [];
   for (let i = 0; i < 100; i++) {
     res.push({
@@ -12,7 +12,7 @@ const datasource = () => {
   return res;
 };
 
-const audithList = () => {
+export const audithList = () => {
   let res: any = [];
   for (let i = 0; i < 20; i++) {
     res.push({

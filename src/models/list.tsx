@@ -1,10 +1,22 @@
 import { message } from 'antd';
 import * as service from '../services/list';
-
+import {datasource,audithList} from '../../mock/list.ts'
+const aduitInfo ={
+  username: '审核用户名',
+  id: 2,
+  url: 'http://',
+  type: 'userType',
+  land: 'land',
+  other: 'othksjhfliashflaskdfdklsfsler',
+  industry1: '一级行业',
+  industry2: '二级行业',
+}
 export default {
   namespace: 'userListInfo',
   state: {
-    listInfo: [], //审核列表信息
+    listInfo: datasource(),
+    aduitInfo:aduitInfo, //审核列表信息
+    audithList:audithList,
     searchParams: {
       create_time: '',
       industry: '',
@@ -17,7 +29,7 @@ export default {
     //获取列表信息
     *getListInfo({}, { call, put, select }) {
       const { searchParams = {} } = yield select((state) => state.userListInfo);
-      const { data, errno, errmsg } = yield call(
+      let { data, errno, errmsg } = yield call(
         service.searchListInfo,
         searchParams,
       );
@@ -29,6 +41,12 @@ export default {
           },
         });
       } else {
+        yield put({
+          type: 'upDateState',
+          payload: {
+            listInfo: data,
+          },
+        });
         message.error(errmsg);
       }
     },
